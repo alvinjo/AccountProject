@@ -27,4 +27,8 @@ public class Service {
         accountMap.remove(accNum);
     }
 
+    public HashMap<String,Account> getMap(){
+        return accountMap;
+    }
+
 }
