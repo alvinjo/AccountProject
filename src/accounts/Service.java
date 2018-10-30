@@ -1,6 +1,7 @@
 package accounts;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class Service {
 
@@ -27,7 +28,7 @@ public class Service {
         accountMap.remove(accNum);
     }
 
-    public HashMap<String,Account> getMap(){
+    public Map<String, Account> getMap(){
         return accountMap;
     }
 
