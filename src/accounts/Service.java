@@ -15,7 +15,7 @@ public class Service {
         return accountMap.get(accNum);
     }
 
-    public void putAccount(String accNum, Account account){
+    public void putAccount(Account account){
         accountMap.put(account.getAccountNumber(), account);
     }
 
