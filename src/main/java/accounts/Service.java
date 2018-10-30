@@ -32,4 +32,9 @@ public class Service {
         return accountMap;
     }
 
+    public String getJsonFromMap(){
+        AccountToJSON converter = new AccountToJSON(accountMap);
+        return converter.toJSON();
+    }
+
 }
