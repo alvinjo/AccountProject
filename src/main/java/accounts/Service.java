@@ -37,4 +37,8 @@ public class Service {
         return converter.toJSON();
     }
 
+    public int numOfAccountsWithName(String name){
+        return (int)accountMap.entrySet().stream().filter(a -> a.getValue().getFirstName().equals(name)).count();
+    }
+
 }
