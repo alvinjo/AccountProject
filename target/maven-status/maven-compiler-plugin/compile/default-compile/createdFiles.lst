@@ -3,6 +3,8 @@ business\Service.class
 persistence\repository\AccountDBRepo.class
 interoperability\JAXActivator.class
 util\JSONUtil.class
+persistence\repository\AccountMapRepo.class
 util\App.class
+persistence\repository\IAccountDB.class
 persistence\domain\Account.class
 interoperability\AccountEndPoint.class
