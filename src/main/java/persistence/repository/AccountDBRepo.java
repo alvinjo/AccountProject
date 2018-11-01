@@ -2,6 +2,7 @@ package persistence.repository;
 
 import persistence.domain.Account;
 import util.AccountToJSON;
+import util.JSONUtil;
 
 import javax.inject.Inject;
 import javax.enterprise.inject.Default;
@@ -17,16 +18,16 @@ import static javax.transaction.Transactional.TxType.SUPPORTS;
 
 @Transactional(SUPPORTS)
 @Default
-public class AccountDBRepo {
+public class AccountDBRepo implements IAccountDB {
 
 
     @PersistenceContext(unitName = "primary")
     private EntityManager manager;
 
     @Inject
-    private AccountToJSON jUtil;
+    private JSONUtil jUtil;
 
-
+    @Override
     public String getAllAccounts() {
         Query query = manager.createQuery("select a from Account a");
         Collection<Account> accounts = (Collection<Account>) query.getResultList();
@@ -35,13 +36,15 @@ public class AccountDBRepo {
     }
 
     @Transactional(REQUIRED)
+    @Override
     public String createAccount(String account){
         Account anAccount = jUtil.jsonToObj(account, Account.class);
-        manager.persist(anAccount);
+        manager.persist(anAccount); //this
         return "{\"message\": \"account has been successfully added\"}";
     }
 
-/*    @Transactional(REQUIRED)
+    @Transactional(REQUIRED)
+    @Override
     public String deleteAccount(String accNum){
         Account searchAccount = findAccount(accNum);
         if(searchAccount != null){
@@ -50,21 +53,22 @@ public class AccountDBRepo {
             return "{\"message\": \"account not found\"}";
         }
         return "{\"message\": \"account has been successfully deleted\"}";
-    }*/
+    }
 
-/*    //not scalable
     @Transactional(REQUIRED)
-    public String updateAccount(String accNum, String first, String last){
-        Account updatingAccount = findAccount(accNum);
-        if(first != null){
-            updatingAccount.setFirstName(first);
-        }
-        if(last != null){
-            updatingAccount.setLastName(last);
-        }
-//        manager.persist(updatingAccount);
-        return "account updated";
-    }*/
+    public String updateAccount(String account){
+        Account updatedInfo = jUtil.jsonToObj(account, Account.class);
+        Account dbAccount = findAccount(updatedInfo.getAccountNumber());
+        dbAccount.setFirstName(updatedInfo.getFirstName());
+        dbAccount.setLastName(updatedInfo.getLastName());
+        return "{\"message\": \"account has been successfully updated\"}";
+    }
+
+
+    public String getAccountById(String accNum){
+        return jUtil.objToJson(findAccount(accNum));
+    }
+
 
 /*    @Transactional(REQUIRED)
     public String update(String accNum, String first, String last){
@@ -85,9 +89,9 @@ public class AccountDBRepo {
         this.manager = manager;
     }
 
-/*    public void setJUtil(AccountToJSON jUtil) {
+    public void setJUtil(JSONUtil jUtil) {
         this.jUtil = jUtil;
-    }*/
+    }
 
 
 }
