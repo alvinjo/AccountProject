@@ -28,6 +28,10 @@ public class Service {
         accountMap.put(account.getAccountNumber(), account);
     }
 
+    public String createAccount(String account){
+        return repo.createAccount(account);
+    }
+
     public void addAndPutAccount(String first, String last, String acc){
         accountMap.put(acc, new Account(first, last, acc));
     }

@@ -4,12 +4,19 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import persistence.domain.Account;
 
+import javax.enterprise.inject.Default;
+import java.io.IOException;
 import java.util.Map;
+
 
 public class AccountToJSON {
 
-    ObjectMapper mapper = new ObjectMapper();
-    Map<String, Account> accountMap;
+    private ObjectMapper mapper = new ObjectMapper();
+    private Map<String, Account> accountMap;
+
+    public AccountToJSON(){
+
+    }
 
     public AccountToJSON(Map<String,Account> map){
         this.accountMap = map;
@@ -36,6 +43,16 @@ public class AccountToJSON {
         }
 
         return jsonObj;
+    }
+
+    public <T> T jsonToObj(String json, Class<T> aClass){
+
+        try {
+            return mapper.readValue(json, aClass);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }
